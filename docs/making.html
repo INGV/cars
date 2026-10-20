@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Making of the CARS Catalog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px auto;
+            max-width: 900px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #0056b3;
+        }
+        .step {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 5px solid #0056b3;
+        }
+        .step h3 {
+            margin-top: 0;
+        }
+        figure {
+            text-align: center;
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+        figcaption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Building the CARS Catalog: From Absolute to High-Precision Relative Locations</h1>
+    <p>The Catalog of Relative Seismic locations (CARS) provides an enhanced, high-resolution imaging of Italian seismicity spanning from 1981 to 2018. The following steps outline the methodological framework used to construct the catalog, evolving from the absolute CLASS baseline to sub-kilometric precision.</p>
+
+    <div class="step">
+        <h3>1. The Absolute Baseline (CLASS)</h3>
+        <p>The foundation of CARS is the 3D absolute CLASS catalog, which established a robust baseline of approximately 420,000 earthquakes across the Italian peninsula[cite: 1, 6]. This initial dataset integrated historical readings and modern, centralized bulletins, relying on a comprehensive 3D velocity model to bridge regional and local monitoring.</p>
+        <figure>
+            <img src="./figura_1.jpeg" alt="CLASS baseline seismicity">
+            <figcaption>Figure 1: Spatial distribution of the Italian seismicity documented in the CLASS catalog and earthquake density.</figcaption>
+        </figure>
+    </div>
+
+    <div class="step">
+        <h3>2. Compiling Differential Travel Times</h3>
+        <p>To feed the double-difference (DD) inversion pipeline, a massive dataset was derived from the absolute baseline. We compiled approximately 34 million P-wave and 24 million S-wave catalog differential travel times, carefully managing network evolution and applying rigorous station aliasing procedures to ensure consistency[cite: 8, 9].</p>
+    </div>
+
+    <div class="step">
+        <h3>3. Integration of Waveform Cross-Correlations</h3>
+        <p>For the modern instrumental era (post-2009), we significantly improved timing resolution by computing over two billion time-domain waveform cross-correlations[cite: 9, 44]. This yielded roughly 40 million high-precision differential delay measurements (CC &ge; 0.7) for event pairs within a 10 km distance, achieving sub-millisecond precision and dramatically minimizing manual picking scatter[cite: 9, 10, 44].</p>
+        <figure>
+            <img src="./figura_3.jpeg" alt="Delay time residuals">
+            <figcaption>Figure 3: Distribution of delay time residuals demonstrating the precision of cross-correlation data.</figcaption>
+        </figure>
+    </div>
+
+    <div class="step">
+        <h3>4. Velocity Structure Segmentation</h3>
+        <p>To accurately account for Italy's complex regional geology during the relative location process, the territory was segmented into 17 distinct seismotectonic macro-areas[cite: 15]. Each region was assigned a unique, localized 1D mean velocity profile extracted from a national-scale 3D tomographic model, ensuring that the inversion remained tightly constrained by the local structure[cite: 15].</p>
+        <figure>
+            <img src="./figura_7.jpeg" alt="Macro-areas for velocity models">
+            <figcaption>Figure 7: Subdivision of the Italian region into 17 macro-areas for regional velocity structures.</figcaption>
+        </figure>
+    </div>
+
+    <div class="step">
+        <h3>5. Strategic Initial Location Blending</h3>
+        <p>We optimized the starting coordinates using a dual-integration framework. For high-density, critical areas like the 2009 L'Aquila or 2016 Amatrice sequences, we utilized highly refined 1D absolute locations. Conversely, for scattered background seismicity, the original 3D CLASS coordinates were retained, maximizing the resolution of the inputs prior to DD relocation[cite: 15].</p>
+    </div>
+
+    <div class="step">
+        <h3>6. Spatial Gridding Strategy</h3>
+        <p>The vast dataset posed severe computational challenges, particularly memory exhaustion during inversion. We circumvented this by partitioning the entire study area into uniform 100 km x 100 km computational grid cells[cite: 15]. To preserve structural continuity across boundaries, a robust 80% spatial overlap in both longitude and latitude was enforced[cite: 15].</p>
+        <figure>
+            <img src="./figura_8.jpeg" alt="Spatial gridding">
+            <figcaption>Figure 8: Spatial grid implemented with an 80% overlap to parallelize the relocation process.</figcaption>
+        </figure>
+    </div>
+
+    <div class="step">
+        <h3>7. High-Density Sub-sampling Workflow</h3>
+        <p>In highly clustered regions like the Central Apennines, where event-pair links grow quadratically, standard gridding was insufficient. Here, we deployed a random sub-sampling scheme within the overlapping cells, creating 20 numerically stable batches of 10,000 events each[cite: 18]. This ensured consistent spatial connectivity and computational feasibility[cite: 18].</p>
+        <figure>
+            <img src="./figura_9.jpeg" alt="Sub-sampling workflow">
+            <figcaption>Figure 9: Methodology for random sub-sampling and parallel relocation in high-density seismic zones.</figcaption>
+        </figure>
+    </div>
+
+    <div class="step">
+        <h3>8. Parallel Double-Difference Relocation</h3>
+        <p>With the data structurally partitioned, each overlapping grid cell and sub-sampled batch was independently relocated using the hypoDD algorithm[cite: 18, 44]. This parallelized approach systematically minimized path-dependent velocity variations and effectively reduced the residuals across millions of equations.</p>
+    </div>
+
+    <div class="step">
+        <h3>9. Catalog Synthesis and Merging</h3>
+        <p>Following the independent relocations, the comprehensive CARS catalog was synthesized[cite: 18]. Hypocenters from overlapping boundaries and multiple sub-sampled batches were merged by calculating a linear-weighted mean[cite: 18]. This weighting was based on the normalized distances of each solution to its cluster centroid, guaranteeing a continuous, high-resolution final dataset[cite: 18].</p>
+    </div>
+
+    <div class="step">
+        <h3>10. Parametric Bootstrap Error Estimation</h3>
+        <p>To rigorously quantify uncertainties, we applied a space-partitioned parametric bootstrap scheme. By extracting residual standard deviations for each cell, we generated 100 randomized datasets per cell[cite: 18]. Relocating these produced approximately 673 million repeated locations, allowing us to define robust horizontal and vertical errors based on the final standard deviations[cite: 18].</p>
+        <figure>
+            <img src="./figura_10.jpeg" alt="Location uncertainties">
+            <figcaption>Figure 10: Geographical distribution of hypocentral location uncertainties calculated via bootstrap.</figcaption>
+        </figure>
+    </div>
+
+    <div class="step">
+        <h3>11. The Final CARS Dataset</h3>
+        <p>The resulting CARS catalog contains ~320,000 highly resolved hypocenters[cite: 5, 18]. The relative relocation successfully canceled common-path errors, notably correcting a systematic 2.5 km over-deepening artifact present in the absolute baseline for shallow crustal events[cite: 2, 20, 23]. CARS now provides unprecedented, sharp 3D imaging of Italy's active fault architectures[cite: 2, 24].</p>
+        <figure>
+            <img src="./figura_14.jpeg" alt="Depth corrections">
+            <figcaption>Figure 14: Spatial distribution of hypocentral depth corrections from CLASS to CARS.</figcaption>
+        </figure>
+    </div>
+
+</body>
+</html>
