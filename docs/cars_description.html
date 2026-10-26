@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARS Catalog CSV Description</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>CARS Catalog Dataset Description</h1>
+    <p>This document provides a detailed description of the CARS (CAtalog of Relative Seismic locations) dataset format. The dataset is provided as a comma-separated values (CSV) file, utilizing a semicolon (<code>;</code>) as the delimiter. It contains highly precise, double-difference relocated earthquake hypocenters for the Italian peninsula (1981-2018).</p>
+
+    <h2>Data Structure and Columns</h2>
+    <p>The dataset contains the following columns, describing the hypocentral parameters, location uncertainties derived from the space-partitioned parametric bootstrap scheme, and quality metrics inherited from the absolute CLASS baseline catalog.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column Name</th>
+                <th>Description</th>
+                <th>Data Type / Unit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>idcars</code></td>
+                <td>Unique identifier for the relocated event within the CARS catalog.</td>
+                <td>Integer</td>
+            </tr>
+            <tr>
+                <td><code>idclass</code></td>
+                <td>Unique identifier for the original event in the CLASS baseline catalog (Latorre et al., 2023). This allows for cross-referencing between the absolute and relative locations.</td>
+                <td>Integer</td>
+            </tr>
+            <tr>
+                <td><code>ingvwsid</code></td>
+                <td>Identifier linking the event to the INGV web services database. A value of <code>0</code> may indicate an event lacking a direct mapping in the current web service schema for this specific extraction.</td>
+                <td>Integer</td>
+            </tr>
+            <tr>
+                <td><code>origintime</code></td>
+                <td>The origin time of the relocated earthquake in UTC (ISO 8601 format: <code>YYYY-MM-DDTHH:MM:SS.sss</code>).</td>
+                <td>String (Datetime)</td>
+            </tr>
+            <tr>
+                <td><code>lat</code></td>
+                <td>Relocated hypocentral latitude (WGS84).</td>
+                <td>Float (Decimal Degrees)</td>
+            </tr>
+            <tr>
+                <td><code>lon</code></td>
+                <td>Relocated hypocentral longitude (WGS84).</td>
+                <td>Float (Decimal Degrees)</td>
+            </tr>
+            <tr>
+                <td><code>depth</code></td>
+                <td>Relocated hypocentral depth below sea level.</td>
+                <td>Float (km)</td>
+            </tr>
+            <tr>
+                <td><code>nccp</code></td>
+                <td>Number of highly correlated P-wave differential travel-time measurements (cross-correlation data) used in the double-difference relocation.</td>
+                <td>Integer</td>
+            </tr>
+            <tr>
+                <td><code>nccs</code></td>
+                <td>Number of highly correlated S-wave differential travel-time measurements (cross-correlation data) used in the double-difference relocation.</td>
+                <td>Integer</td>
+            </tr>
+            <tr>
+                <td><code>nctp</code></td>
+                <td>Number of P-wave differential travel-time measurements derived from catalog phase picks used in the relocation.</td>
+                <td>Integer</td>
+            </tr>
+            <tr>
+                <td><code>ncts</code></td>
+                <td>Number of S-wave differential travel-time measurements derived from catalog phase picks used in the relocation.</td>
+                <td>Integer</td>
+            </tr>
+            <tr>
+                <td><code>rmscc</code></td>
+                <td>Root Mean Square (RMS) residual of the cross-correlation differential travel times after relocation. A value of <code>-9.000</code> indicates no cross-correlation data was used or available for this event (typical for pre-2009 events).</td>
+                <td>Float (seconds)</td>
+            </tr>
+            <tr>
+                <td><code>rmsct</code></td>
+                <td>Root Mean Square (RMS) residual of the catalog-derived differential travel times after relocation.</td>
+                <td>Float (seconds)</td>
+            </tr>
+            <tr>
+                <td><code>axis_h_max</code></td>
+                <td>Maximum horizontal error ($E_{H1}$), calculated as the standard deviation of the locations derived from the bootstrap resampling procedure. A value of <code>-9.000</code> indicates the error could not be robustly estimated.</td>
+                <td>Float (km)</td>
+            </tr>
+            <tr>
+                <td><code>axis_h_min</code></td>
+                <td>Minimum horizontal error ($E_{H2}$), calculated via the bootstrap resampling procedure. A value of <code>-9.000</code> indicates the error could not be robustly estimated.</td>
+                <td>Float (km)</td>
+            </tr>
+            <tr>
+                <td><code>axis_v</code></td>
+                <td>Vertical error ($E_Z$), calculated via the bootstrap resampling procedure. A value of <code>-9.000</code> indicates the error could not be robustly estimated.</td>
+                <td>Float (km)</td>
+            </tr>
+            <tr>
+                <td><code>bootstrap_gap</code></td>
+                <td>Maximum azimuthal gap in the station coverage calculated during the bootstrap resampling analysis.</td>
+                <td>Float (degrees)</td>
+            </tr>
+            <tr>
+                <td><code>bootstrap_smp</code></td>
+                <td>Total number of bootstrap resamplings performed for this event (typically 100).</td>
+                <td>Integer</td>
+            </tr>
+            <tr>
+                <td><code>bootstrap_cfd</code></td>
+                <td>Confidence level associated with the bootstrap error ellipsoid (e.g., 0.90 for 90% confidence).</td>
+                <td>Float</td>
+            </tr>
+            <tr>
+                <td><code>CLASS_Quality</code></td>
+                <td>Quality rating assigned to the event in the original CLASS catalog (A: best, to D/E: worst).</td>
+                <td>String (Char)</td>
+            </tr>
+            <tr>
+                <td><code>CLASS_magnitude</code></td>
+                <td>Magnitude of the event, as reported in the CLASS catalog. May be empty or NaN if unavailable.</td>
+                <td>Float</td>
+            </tr>
+            <tr>
+                <td><code>CLASS_magnitude_type</code></td>
+                <td>Type or source of the magnitude reported in the <code>CLASS_magnitude</code> column (e.g., <code>CSI1_WEB_MCSTI</code>). May be empty.</td>
+                <td>String</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Missing Data Convention</h2>
+    <p>Within the CARS dataset, a placeholder value of <code>-9.000</code> is systematically used to denote null or undefined numerical values, particularly concerning RMS residuals for absent data types (e.g., <code>rmscc</code> when no waveform correlation data is present) or location error estimates (e.g., <code>axis_h_max</code>, <code>axis_h_min</code>, <code>axis_v</code>) that failed to converge or meet robustness criteria during the bootstrap resampling process.</p>
+
+</body>
+</html>
